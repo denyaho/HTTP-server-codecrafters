@@ -1,0 +1,28 @@
+package main
+
+import (
+	"fmt"
+	"net"
+	"os"
+	"github.com/codecrafters-io/http-server-starter-go/internal/server"
+	"github.com/codecrafters-io/http-server-starter-go/internal/config"
+)
+
+
+// Ensures gofmt doesn't remove the "net" and "os" imports above (feel free to remove this!)
+var _ = net.Listen
+var _ = os.Exit
+
+const http_version = "HTTP/1.1"
+
+func main() {
+	config := config.ConfigParse(os.Args)
+	// You can use print statements as follows for debugging, they'll be visible when running tests.
+	fmt.Println("Logs from your program will appear here!")
+
+	server := server.New("0.0.0.0:4221", config)
+	server.Start()
+	// TODO: Uncomment the code below to pass the first stage
+	//
+
+}
