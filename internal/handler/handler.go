@@ -25,6 +25,10 @@ func HandleConnection(conn net.Conn, config *config.Config) {
 			case "POST":
 				HandlePost(request, conn, config)
 			case "DELETE":
+				HandleDelete(request, conn, config)
+			case "HEAD":
+				HandleHead(request, conn, config)		
+			case "PUT":
 				
 		}
 		if request.Headers["Connection"] == "close" {

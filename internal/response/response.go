@@ -124,7 +124,13 @@ func HandleFileCreate(response *Response){
 	response.StatusText = "Created"
 }
 
-func (r *Response) Write(conn net.Conn, keepAlive bool) {
+func HandleFileDelete(response *Response){
+	response.Version = "HTTP/1.1"
+	response.StatusCode = 204
+	response.StatusText = "No Content"
+}
+
+func (r *Response) Write(conn net.Conn, keepAlive bool, head bool) {
 	if keepAlive {
 		r.Headers["Connection"] = "keep-alive"
 	}else {
@@ -139,6 +145,9 @@ func (r *Response) Write(conn net.Conn, keepAlive bool) {
 				return
 			} else if r.Headers["Content-Encoding"] != "" {
 				header_lines = header_lines + fmt.Sprintf("Content-Encoding: %s\r\n", r.Headers["Content-Encoding"])
+			} else if head == false {
+				conn.Write([]byte(status_line + header_lines + "\r\n"))
+				return
 			}
 			body_line := fmt.Sprintf("\r\n%s", r.Body)
 			conn.Write([]byte(status_line + header_lines + body_line))

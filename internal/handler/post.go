@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/codecrafters-io/http-server-starter-go/internal/parser"
 	"github.com/codecrafters-io/http-server-starter-go/internal/config"
 	"github.com/codecrafters-io/http-server-starter-go/internal/response"
@@ -24,6 +23,6 @@ func HandlePost(request *parser.Request, conn net.Conn, config *config.Config) {
 		}else{
 			response.HandleFileCreate(res)
 		}
-		res.Write(conn, false)
+		res.Write(conn, false, false)
 	}
 }

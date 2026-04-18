@@ -29,5 +29,5 @@ func HandleGet(request *parser.Request, conn net.Conn, config *config.Config) {
 		response.HandleNotFound(res)
 	}
 	keepalive := request.Headers["Connection"] != "close"
-	res.Write(conn, keepalive)
+	res.Write(conn, keepalive, false)
 }
