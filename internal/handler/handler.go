@@ -24,6 +24,8 @@ func HandleConnection(conn net.Conn, config *config.Config) {
 				HandleGet(request, conn, config)
 			case "POST":
 				HandlePost(request, conn, config)
+			case "DELETE":
+				
 		}
 		if request.Headers["Connection"] == "close" {
 			break

@@ -112,6 +112,18 @@ func HandleNotFound(response *Response) {
 	response.StatusText = "Not Found"
 }
 
+func HandleServerError(response *Response){
+	response.Version = "HTTP/1.1"
+	response.StatusCode = 500
+	response.StatusText = "Internal Server Error"
+}
+
+func HandleFileCreate(response *Response){
+	response.Version = "HTTP/1.1"
+	response.StatusCode = 201
+	response.StatusText = "Created"
+}
+
 func (r *Response) Write(conn net.Conn, keepAlive bool) {
 	if keepAlive {
 		r.Headers["Connection"] = "keep-alive"
