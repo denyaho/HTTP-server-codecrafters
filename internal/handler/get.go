@@ -6,6 +6,7 @@ import (
 	"net"
 	"strings"
 	"github.com/codecrafters-io/http-server-starter-go/internal/response"
+	"fmt"
 )
 
 var SupportedEncoding = map[string]bool{
@@ -17,17 +18,26 @@ func HandleGet(request *parser.Request, conn net.Conn, config *config.Config) {
 	res := &response.Response{
 		Headers: make(map[string]string),
 	}
+	fmt.Printf("Handling GET request for path: %s\n", request.Path)
 	if request.Path == "/" {
 		response.HandleRoot(res)
 	}else if strings.HasPrefix(request.Path, "/echo/") {
 		response.HandleEcho(res, request)
 	}else if request.Path == "/user-agent" {
 		response.HandleUserAgent(res, request)
-	} else if strings.HasPrefix(request.Path, "/files"){
+	}else if strings.HasPrefix(request.Path, "/files"){
+		if parser.Check_traversal(request.Path) {
+			response.HandleBadRequest(res)
+			keepalive := request.Headers["Connection"] != "close"
+			res.Write(conn, keepalive, false)
+			return
+		}
 		response.HandleFiles(res, request, config)
 	}else{
+		fmt.Println("Path not found: ", request.Path)
 		response.HandleNotFound(res)
 	}
+	
 	keepalive := request.Headers["Connection"] != "close"
 	res.Write(conn, keepalive, false)
 }

@@ -16,7 +16,6 @@ func ConfigParse(arguments []string) *Config {
 }
 
 func CreateParser(arguments []string, config *Config) *flag.FlagSet {
-
 	fs := flag.NewFlagSet("http-server-starter-go", flag.ContinueOnError)
 
 	fs.StringVar(&config.DirName, "directory", "", "Directory to serve files from")
